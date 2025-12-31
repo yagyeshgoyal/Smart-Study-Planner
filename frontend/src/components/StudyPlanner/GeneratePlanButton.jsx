@@ -1,3 +1,5 @@
+
+
 export default function GeneratePlanButton({ subjects, setDailySchedule }) {
 
   const generate = () => {

@@ -1,10 +1,27 @@
 import { Calendar, Clock, TrendingUp, CheckCircle, Trash2 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 export const SubjectCard = ({ subject, sessions }) => {
   const { deleteSubject, updateSubject } = useApp();
   const [showConfirm, setShowConfirm] = useState(false);
+
+  const ref = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+
+    if (ref.current) observer.observe(ref.current);
+
+    return () => observer.disconnect();
+  }, []);
 
   const subjectSessions = sessions.filter(
     (s) => s.subject_id === subject.id
@@ -56,7 +73,7 @@ export const SubjectCard = ({ subject, sessions }) => {
     <div
       className={`bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border-l-4 ${getPriorityColor()} transform transition-smooth hover:scale-105 hover:shadow-2xl ${
         subject.status === 'completed' ? 'opacity-60' : ''
-      } animate-slide-up hover:-translate-y-2`}
+      } ${isVisible ? 'animate-slide-up' : 'animate-slide-down'} hover:-translate-y-2`}
     >
       <div className="flex justify-between items-start mb-4">
         <div className="flex items-center gap-3">
