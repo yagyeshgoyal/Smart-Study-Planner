@@ -5,9 +5,10 @@ import { PomodoroTimer } from './components/PomodoroTimer';
 import { StatsCard } from './components/StatsCard';
 import { AddSubjectForm } from './components/AddSubjectForm';
 import { BookOpen } from 'lucide-react';
+import StudyPlanner from './components/StudyPlanner/StudyPlanner';
 
 function App() {
-  const { subjects, sessions, loading } = useApp();
+  const { subjects, sessions, loading , darkMode} = useApp();
 
   if (loading) {
     return (
@@ -20,7 +21,9 @@ function App() {
   const activeSubjects = subjects.filter((s) => s.status === 'active');
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
+    <div className={`min-h-screen transition-colors ${
+    darkMode ? 'bg-gray-900' : 'bg-gray-50'
+  }`}>
       <Header />
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -34,10 +37,14 @@ function App() {
         </div>
 
         <div className="mb-6 animate-fade-in">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className={`text-2xl font-bold  mb-2 ${
+              darkMode ? 'text-white' : 'text-gray-900'
+            }`}>
             Your Subjects
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className={` ${
+            darkMode ? 'text-gray-400' : 'text-gray-600'
+          }`}>
             Track your exam preparation progress
           </p>
         </div>
@@ -93,6 +100,7 @@ function App() {
       </main>
 
       <AddSubjectForm />
+      <StudyPlanner/>
     </div>
   );
 }
